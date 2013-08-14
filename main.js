@@ -41,9 +41,12 @@ function onArrayLoaded (arr) {
 
   var hashT = {};
 
+  var percent = 0;
+  var total = arrClear.length;
   arrClear.forEach(function(x, i) {
     if( i % 10000 === 0) {
-      console.log('.');
+      percent = i * 100 / total;
+      console.log(percent, '%');
     }
     // var y_min = -10000 - x;
     // var y_max = 10000 - x;
