@@ -5,7 +5,7 @@ exports.loadArray = function (fileName, cb) {
   var arr = [];
   lineReader.eachLine(fileName, function(line) {
     if(line.length) {
-      arr.push(~~line);
+      arr.push(+line);
     }
   }).then(function () {
     cb(arr);

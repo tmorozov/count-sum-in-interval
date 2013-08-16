@@ -28,7 +28,7 @@ function findIndex(arr, val) {
   }
 
   while (start != end ) {
-    var mid = ~~((start + end) / 2);
+    var mid = +((start + end) / 2);
 // if (doLog) {
 //   console.log('indexes', start, mid, end);
 //   console.log('values', arr[start], arr[mid], arr[end]);
@@ -55,62 +55,82 @@ function onArrayLoaded (arr) {
   console.log('loaded');
 
   var hash = {};
-  var arrClear = [];
   arr.forEach(function(item) {
-    if(hash[item] === true) {
-    } else {
-      hash[item] = true;
-      arrClear.push(~~item);
-    }
+    hash[item] = true;
   });
 
   console.log('hashed & cleared');
 
-  arrClear.sort(function(a, b){
-    return a-b;
-  });
+  // arr.sort(function(a, b){
+  //   return a-b;
+  // });
 
-  console.log('sorted');
-  console.log(arrClear.length, arrClear[0], arrClear[arrClear.length-1]);
+  // console.log('sorted');
+  // console.log(arr.length, arr[0], arr[arr.length-1]);
 
-  var hashT = {};
-
-  var percent = 0;
-  var total = arrClear.length;
-  arrClear.forEach(function(x, i) {
-    if( i % 10000 === 0) {
-      percent = i * 100 / total;
-      console.log(percent, '%');
+  // shuold work!
+  var countT = 0;
+  var len = arr.length;
+  var tMax = 10000;
+  var tMin = -10000;
+  var divider = +((tMax - tMin) / 100);
+  console.log('div', divider);
+  for(var t = tMin; t <= tMax; t++) {
+    if(t % divider === 0) {
+      console.log(+( (t-tMin) / divider), '%');
     }
 
-    var y_min = -10000 - x;
-    var y_max = 10000 - x;
-// console.log(x, y_min, y_max);
-
-    var y_min_i = findIndex(arrClear, y_min);
-// console.log('min yi', y_min_i);
-    var y_max_i = findIndex(arrClear, y_max);
-// console.log('max yi', y_max_i);
-
-    for(var y_i=y_min_i; y_i<=y_max_i; y_i++) {
-      var y = arrClear[y_i];
-      if(y != x ) {
-        var t = x+y;
-        if (t >= -10000 && t <= 10000) {
-          hashT[x+y] = true;
-        }
+    for(var i=0; i<len; i++) {
+      var x = arr[i];
+      var y = t-x;
+      if(x === y) {
+        continue;
+      }
+      if( hash[y] === true ) {
+        console.log('x, y, t', x, y, t);
+        countT++;
+        break;
       }
     }
+  }
+  console.log('result:', countT);
 
-    // for(var j=-10000; j<=10000; j++) {
-    //   var y = j-x;
-    //   if(y != x && hash[y] === true) {
-    //     hashT[j] = true;
-    //   }
-    // }
-  });
+// error!
+  // var hashT = {};
 
-  console.log('result:', Object.keys(hashT).length);
+  // var percent = 0;
+  // var total = arr.length;
+  // arr.forEach(function(x, i) {
+  //   if( i % 10000 === 0) {
+  //     percent = i * 100 / total;
+  //     console.log(percent, '%');
+  //   }
+
+  //   var y_min = -10000 - x;
+  //   var y_max = 10000 - x;
+
+  //   var y_min_i = findIndex(arr, y_min);
+  //   var y_max_i = findIndex(arr, y_max);
+
+  //   for(var y_i=y_min_i; y_i<=y_max_i; y_i++) {
+  //     var y = arr[y_i];
+  //     if(y !== x ) {
+  //       var t = x+y;
+  //       if (t >= -10000 && t <= 10000) {
+  //         hashT[t] = true;
+  //       }
+  //     }
+  //   }
+
+  //   // for(var j=-10000; j<=10000; j++) {
+  //   //   var y = j-x;
+  //   //   if(y != x && hash[y] === true) {
+  //   //     hashT[j] = true;
+  //   //   }
+  //   // }
+  // });
+
+  // console.log('result:', Object.keys(hashT).length);
 }
 
 if(require.main == module) {
